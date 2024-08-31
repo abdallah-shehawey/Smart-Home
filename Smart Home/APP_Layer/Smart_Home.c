@@ -47,7 +47,6 @@ char Password  [EEPROM_UserNameMaximumLength];
 
 volatile u8 KPD_Press, Error_State = 1,USNL = 0, PWL = 0;
 volatile u8 Check[21] ;
-volatile u8 Check_Flag = 1, CheckLength = 0;
 /*
  * USNL ==> User Name Length
  * PWL   ==> PassWord Length
@@ -320,7 +319,7 @@ void Check_UserName(void)
 	CLCD_vSendString("Check UserName");
 	CLCD_vSetPosition(2, 1);
 	CLCD_vSendCommand(CLCD_DISPLAYON_CURSORON);
-	CheckLength = 0, Check_Flag = 1;
+	u8 CheckLength = 0, Check_Flag = 1;
 
 	while(1)
 	{
@@ -368,6 +367,7 @@ void Check_UserName(void)
 
 		}
 	}
+	//Check if UserName is correct or not
 	if (CheckLength == USNL)
 	{
 		for(u8 i = 0; i < USNL; i++)
@@ -380,12 +380,27 @@ void Check_UserName(void)
 				_delay_ms(500);
 				Check_UserName();
 			}
+			else
+			{
+
+			}
 		}
 		if(Check_Flag == 1)
 		{
 			CLCD_vClearScreen();
 			CLCD_vSendString("True UserName");
 		}
+	}
+	else if (CheckLength != USNL)
+	{
+		CLCD_vClearScreen();
+		CLCD_vSendString("Wrong UserName");
+		_delay_ms(500);
+		Check_UserName();
+	}
+	else
+	{
+
 	}
 }
 
