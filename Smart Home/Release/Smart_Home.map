@@ -58,7 +58,7 @@ c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clz.o)
 Allocating common symbols
 Common symbol       size              file
 
-USN_Get             0x14              ./APP_Layer/Smart_Home.o
+Check               0x15              ./APP_Layer/Smart_Home.o
 KPD_Press           0x1               ./APP_Layer/Smart_Home.o
 UserName            0x14              ./APP_Layer/Smart_Home.o
 Password            0x14              ./APP_Layer/Smart_Home.o
@@ -184,7 +184,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x2e48
+.text           0x00000000     0x31d2
  *(.vectors)
  .vectors       0x00000000       0x54 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vectors
@@ -607,31 +607,37 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .text.Clear_Char
                 0x00002ae0       0x14 ./APP_Layer/Smart_Home.o
                 0x00002ae0                Clear_Char
+ .text.Check_UserName
+                0x00002af4      0x138 ./APP_Layer/Smart_Home.o
+                0x00002af4                Check_UserName
+ .text.Set_PassWord
+                0x00002c2c      0x1ea ./APP_Layer/Smart_Home.o
+                0x00002c2c                Set_PassWord
  .text.Set_UserName
-                0x00002af4      0x1e0 ./APP_Layer/Smart_Home.o
-                0x00002af4                Set_UserName
- .text.main     0x00002cd4       0x22 ./APP_Layer/Smart_Home.o
-                0x00002cd4                main
- .text.libgcc   0x00002cf6       0x3e c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
-                0x00002cf6                __mulsi3
- .text.libgcc   0x00002d34       0x28 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
-                0x00002d34                __udivmodhi4
- .text.libgcc   0x00002d5c       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
-                0x00002d5c                __udivmodsi4
- .text.libgcc   0x00002da0       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
-                0x00002da0                __divmodsi4
- .text.libgcc   0x00002dd6        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x00002dd6        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x00002dd6        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .text.libgcc   0x00002dd6       0x38 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
-                0x00002dd6                __prologue_saves__
- .text.libgcc   0x00002e0e       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
-                0x00002e0e                __epilogue_restores__
-                0x00002e44                . = ALIGN (0x2)
+                0x00002e16      0x20a ./APP_Layer/Smart_Home.o
+                0x00002e16                Set_UserName
+ .text.main     0x00003020       0x60 ./APP_Layer/Smart_Home.o
+                0x00003020                main
+ .text.libgcc   0x00003080       0x3e c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+                0x00003080                __mulsi3
+ .text.libgcc   0x000030be       0x28 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+                0x000030be                __udivmodhi4
+ .text.libgcc   0x000030e6       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                0x000030e6                __udivmodsi4
+ .text.libgcc   0x0000312a       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+                0x0000312a                __divmodsi4
+ .text.libgcc   0x00003160        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x00003160        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x00003160        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x00003160       0x38 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+                0x00003160                __prologue_saves__
+ .text.libgcc   0x00003198       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+                0x00003198                __epilogue_restores__
+                0x000031ce                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00002e44        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x00002e44                exit
-                0x00002e44                _exit
+ .fini9         0x000031ce        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000031ce                exit
+                0x000031ce                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -650,11 +656,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00002e44        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x000031ce        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00002e48                _etext = .
+                0x000031d2                _etext = .
 
-.data           0x00800060      0x168 load address 0x00002e48
+.data           0x00800060      0x1b4 load address 0x000031d2
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
@@ -670,155 +676,162 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .data          0x00800060        0x0 ./HAL_Layer/LM35/LM35_prog.o
  .data          0x00800060        0x0 ./HAL_Layer/LED/LED_prog.o
  .data          0x00800060        0x0 ./HAL_Layer/CLCD/CLCD_prog.o
- .data          0x00800060       0x57 ./APP_Layer/Smart_Home.o
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfsi.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixsfdi.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfdi.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_addsub_sf.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mul_sf.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_div_sf.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ge_sf.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_lt_sf.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_si_to_sf.o)
- .data          0x008000b7        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_sf_to_si.o)
- .data          0x008000b7        0x8 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_thenan_sf.o)
-                0x008000b7                __thenan_sf
- .data          0x008000bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_usi_to_sf.o)
- .data          0x008000bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
- .data          0x008000bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
- .data          0x008000bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ashldi3.o)
- .data          0x008000bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clzsi2.o)
- .data          0x008000bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_pack_sf.o)
- .data          0x008000bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_unpack_sf.o)
- .data          0x008000bf        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fpcmp_parts_sf.o)
- .data          0x008000bf      0x100 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clz.o)
-                0x008000bf                __clz_tab
+ .data          0x00800060       0xa1 ./APP_Layer/Smart_Home.o
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfsi.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixsfdi.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfdi.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_addsub_sf.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mul_sf.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_div_sf.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ge_sf.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_lt_sf.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_si_to_sf.o)
+ .data          0x00800101        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_sf_to_si.o)
+ .data          0x00800101        0x8 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_thenan_sf.o)
+                0x00800101                __thenan_sf
+ .data          0x00800109        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_usi_to_sf.o)
+ .data          0x00800109        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+ .data          0x00800109        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+ .data          0x00800109        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ashldi3.o)
+ .data          0x00800109        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clzsi2.o)
+ .data          0x00800109        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_pack_sf.o)
+ .data          0x00800109        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_unpack_sf.o)
+ .data          0x00800109        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fpcmp_parts_sf.o)
+ .data          0x00800109      0x100 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clz.o)
+                0x00800109                __clz_tab
  *(.data*)
  .data.CLCD_u8ExtraChar
-                0x008001bf        0x8 ./HAL_Layer/CLCD/CLCD_prog.o
-                0x008001bf                CLCD_u8ExtraChar
+                0x00800209        0x8 ./HAL_Layer/CLCD/CLCD_prog.o
+                0x00800209                CLCD_u8ExtraChar
  .data.Error_State
-                0x008001c7        0x1 ./APP_Layer/Smart_Home.o
-                0x008001c7                Error_State
+                0x00800211        0x1 ./APP_Layer/Smart_Home.o
+                0x00800211                Error_State
+ .data.Check_Flag
+                0x00800212        0x1 ./APP_Layer/Smart_Home.o
+                0x00800212                Check_Flag
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x008001c8                . = ALIGN (0x2)
-                0x008001c8                _edata = .
-                0x008001c8                PROVIDE (__data_end, .)
+                0x00800214                . = ALIGN (0x2)
+ *fill*         0x00800213        0x1 00
+                0x00800214                _edata = .
+                0x00800214                PROVIDE (__data_end, .)
 
-.bss            0x008001c8       0x6b
-                0x008001c8                PROVIDE (__bss_start, .)
+.bss            0x00800214       0x6d
+                0x00800214                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
- .bss           0x008001c8        0x0 ./MCAL_Layer/USART/USART_prog.o
- .bss           0x008001c8        0x0 ./MCAL_Layer/TIMER/TIMER_program.o
- .bss           0x008001c8        0x0 ./MCAL_Layer/SPI/SPI_prog.o
- .bss           0x008001c8        0x0 ./MCAL_Layer/GIE/GIE_prog.o
- .bss           0x008001c8        0x0 ./MCAL_Layer/EEPROM/EEPROM_prog.o
- .bss           0x008001c8        0x0 ./MCAL_Layer/DIO/DIO_prog.o
- .bss           0x008001c8        0x0 ./MCAL_Layer/ADC/ADC_prog.o
- .bss           0x008001c8        0x0 ./HAL_Layer/SW/SW_prog.o
- .bss           0x008001c8        0x0 ./HAL_Layer/SERVO_MOTOR/Servo_Motor_prog.o
- .bss           0x008001c8        0x0 ./HAL_Layer/LM35/LM35_prog.o
- .bss           0x008001c8        0x0 ./HAL_Layer/LED/LED_prog.o
- .bss           0x008001c8        0x0 ./HAL_Layer/CLCD/CLCD_prog.o
- .bss           0x008001c8        0x0 ./APP_Layer/Smart_Home.o
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfsi.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixsfdi.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfdi.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_addsub_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mul_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_div_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ge_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_lt_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_si_to_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_sf_to_si.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_thenan_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_usi_to_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ashldi3.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clzsi2.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_pack_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_unpack_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fpcmp_parts_sf.o)
- .bss           0x008001c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clz.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
+ .bss           0x00800214        0x0 ./MCAL_Layer/USART/USART_prog.o
+ .bss           0x00800214        0x0 ./MCAL_Layer/TIMER/TIMER_program.o
+ .bss           0x00800214        0x0 ./MCAL_Layer/SPI/SPI_prog.o
+ .bss           0x00800214        0x0 ./MCAL_Layer/GIE/GIE_prog.o
+ .bss           0x00800214        0x0 ./MCAL_Layer/EEPROM/EEPROM_prog.o
+ .bss           0x00800214        0x0 ./MCAL_Layer/DIO/DIO_prog.o
+ .bss           0x00800214        0x0 ./MCAL_Layer/ADC/ADC_prog.o
+ .bss           0x00800214        0x0 ./HAL_Layer/SW/SW_prog.o
+ .bss           0x00800214        0x0 ./HAL_Layer/SERVO_MOTOR/Servo_Motor_prog.o
+ .bss           0x00800214        0x0 ./HAL_Layer/LM35/LM35_prog.o
+ .bss           0x00800214        0x0 ./HAL_Layer/LED/LED_prog.o
+ .bss           0x00800214        0x0 ./HAL_Layer/CLCD/CLCD_prog.o
+ .bss           0x00800214        0x0 ./APP_Layer/Smart_Home.o
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfsi.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixsfdi.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfdi.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_addsub_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mul_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_div_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ge_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_lt_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_si_to_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_sf_to_si.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_thenan_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_usi_to_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ashldi3.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clzsi2.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_pack_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_unpack_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fpcmp_parts_sf.o)
+ .bss           0x00800214        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clz.o)
  *(.bss*)
  .bss.USART_pu8SendData
-                0x008001c8        0x2 ./MCAL_Layer/USART/USART_prog.o
+                0x00800214        0x2 ./MCAL_Layer/USART/USART_prog.o
  .bss.USART_u8State
-                0x008001ca        0x1 ./MCAL_Layer/USART/USART_prog.o
+                0x00800216        0x1 ./MCAL_Layer/USART/USART_prog.o
  .bss.USART_pvNotificationFunc
-                0x008001cb        0x2 ./MCAL_Layer/USART/USART_prog.o
+                0x00800217        0x2 ./MCAL_Layer/USART/USART_prog.o
  .bss.USART_pu8ReceiveData
-                0x008001cd        0x2 ./MCAL_Layer/USART/USART_prog.o
+                0x00800219        0x2 ./MCAL_Layer/USART/USART_prog.o
  .bss.USART_u8BufferSize
-                0x008001cf        0x1 ./MCAL_Layer/USART/USART_prog.o
+                0x0080021b        0x1 ./MCAL_Layer/USART/USART_prog.o
  .bss.USART_u8Index
-                0x008001d0        0x1 ./MCAL_Layer/USART/USART_prog.o
+                0x0080021c        0x1 ./MCAL_Layer/USART/USART_prog.o
  .bss.TIMERS_pvCallBackFunc
-                0x008001d1       0x10 ./MCAL_Layer/TIMER/TIMER_program.o
+                0x0080021d       0x10 ./MCAL_Layer/TIMER/TIMER_program.o
  .bss.SPI_pu8RData
-                0x008001e1        0x2 ./MCAL_Layer/SPI/SPI_prog.o
+                0x0080022d        0x2 ./MCAL_Layer/SPI/SPI_prog.o
  .bss.SPI_u8State
-                0x008001e3        0x1 ./MCAL_Layer/SPI/SPI_prog.o
+                0x0080022f        0x1 ./MCAL_Layer/SPI/SPI_prog.o
  .bss.SPI_pvNotificationFunc
-                0x008001e4        0x2 ./MCAL_Layer/SPI/SPI_prog.o
+                0x00800230        0x2 ./MCAL_Layer/SPI/SPI_prog.o
  .bss.SPI_pu8TData
-                0x008001e6        0x2 ./MCAL_Layer/SPI/SPI_prog.o
+                0x00800232        0x2 ./MCAL_Layer/SPI/SPI_prog.o
  .bss.SPI_u8BufferSize
-                0x008001e8        0x1 ./MCAL_Layer/SPI/SPI_prog.o
+                0x00800234        0x1 ./MCAL_Layer/SPI/SPI_prog.o
  .bss.SPI_u8Index
-                0x008001e9        0x1 ./MCAL_Layer/SPI/SPI_prog.o
+                0x00800235        0x1 ./MCAL_Layer/SPI/SPI_prog.o
  .bss.ADC_pu16AsynchConversionResult
-                0x008001ea        0x2 ./MCAL_Layer/ADC/ADC_prog.o
+                0x00800236        0x2 ./MCAL_Layer/ADC/ADC_prog.o
  .bss.ADC_u8State
-                0x008001ec        0x1 ./MCAL_Layer/ADC/ADC_prog.o
+                0x00800238        0x1 ./MCAL_Layer/ADC/ADC_prog.o
  .bss.ADC_pvNotificationFunc
-                0x008001ed        0x2 ./MCAL_Layer/ADC/ADC_prog.o
+                0x00800239        0x2 ./MCAL_Layer/ADC/ADC_prog.o
  .bss.ADC_u8ISRState
-                0x008001ef        0x1 ./MCAL_Layer/ADC/ADC_prog.o
+                0x0080023b        0x1 ./MCAL_Layer/ADC/ADC_prog.o
  .bss.ADC_pu8ChainChannel
-                0x008001f0        0x2 ./MCAL_Layer/ADC/ADC_prog.o
+                0x0080023c        0x2 ./MCAL_Layer/ADC/ADC_prog.o
  .bss.ADC_u8ChainSize
-                0x008001f2        0x1 ./MCAL_Layer/ADC/ADC_prog.o
+                0x0080023e        0x1 ./MCAL_Layer/ADC/ADC_prog.o
  .bss.ADC_u8Index
-                0x008001f3        0x1 ./MCAL_Layer/ADC/ADC_prog.o
- .bss.USNL      0x008001f4        0x1 ./APP_Layer/Smart_Home.o
-                0x008001f4                USNL
- .bss.PWL       0x008001f5        0x1 ./APP_Layer/Smart_Home.o
-                0x008001f5                PWL
+                0x0080023f        0x1 ./MCAL_Layer/ADC/ADC_prog.o
+ .bss.USNL      0x00800240        0x1 ./APP_Layer/Smart_Home.o
+                0x00800240                USNL
+ .bss.PWL       0x00800241        0x1 ./APP_Layer/Smart_Home.o
+                0x00800241                PWL
+ .bss.CheckLength
+                0x00800242        0x1 ./APP_Layer/Smart_Home.o
+                0x00800242                CheckLength
  *(COMMON)
- COMMON         0x008001f6       0x3d ./APP_Layer/Smart_Home.o
-                0x008001f6                USN_Get
-                0x0080020a                KPD_Press
-                0x0080020b                UserName
-                0x0080021f                Password
-                0x00800233                PROVIDE (__bss_end, .)
-                0x00002e48                __data_load_start = LOADADDR (.data)
-                0x00002fb0                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800243       0x3e ./APP_Layer/Smart_Home.o
+                0x00800243                Check
+                0x00800258                KPD_Press
+                0x00800259                UserName
+                0x0080026d                Password
+                0x00800281                PROVIDE (__bss_end, .)
+                0x000031d2                __data_load_start = LOADADDR (.data)
+                0x00003386                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800233        0x0
-                0x00800233                PROVIDE (__noinit_start, .)
+.noinit         0x00800281        0x0
+                0x00800281                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00800233                PROVIDE (__noinit_end, .)
-                0x00800233                _end = .
-                0x00800233                PROVIDE (__heap_start, .)
+                0x00800281                PROVIDE (__noinit_end, .)
+                0x00800281                _end = .
+                0x00800281                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
