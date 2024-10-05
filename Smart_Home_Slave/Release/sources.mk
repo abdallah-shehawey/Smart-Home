@@ -26,7 +26,6 @@ HAL_Layer/CLCD \
 HAL_Layer/LED \
 HAL_Layer/LM35 \
 HAL_Layer/SERVO_MOTOR \
-HAL_Layer/SW \
 MCAL_Layer/ADC \
 MCAL_Layer/DIO \
 MCAL_Layer/GIE \

@@ -14,8 +14,6 @@
 #include "../MCAL_Layer/EEPROM/EEPROM_interface.h"
 #include "../MCAL_Layer/USART/USART_interface.h"
 
-#include "../HAL_Layer/CLCD/CLCD_interface.h"
-
 #include "Security.h"
 
 /*To get Username And Password Length from number of input */

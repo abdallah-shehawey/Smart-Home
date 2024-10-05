@@ -54,9 +54,9 @@
 */
 
 /* D0:D7 */
-#define CLCD_DATA_PORT DIO_PORTA
+#define CLCD_DATA_PORT DIO_PORTC
 /* RS, RW, EN */
-#define CLCD_CONTROL_PORT DIO_PORTA
+#define CLCD_CONTROL_PORT DIO_PORTC
 
 /*___________________________________________________________________________________________________________________*/
 

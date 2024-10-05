@@ -22,14 +22,10 @@ C_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 APP_Layer \
-HAL_Layer/CLCD \
 HAL_Layer/LED \
-HAL_Layer/LM35 \
-HAL_Layer/SERVO_MOTOR \
-HAL_Layer/SW \
-MCAL_Layer/ADC \
 MCAL_Layer/DIO \
 MCAL_Layer/EEPROM \
+MCAL_Layer/EXTI \
 MCAL_Layer/GIE \
 MCAL_Layer/SPI \
 MCAL_Layer/TIMER \

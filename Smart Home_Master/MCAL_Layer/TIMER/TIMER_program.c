@@ -477,11 +477,11 @@ void TIMER1_vInit(void)
 
 void TIMER2_vInit(void)
 {
-	#if TIMER2_EXTERNAL_CLK == ENABLE
-		SET_BIT(ASSR, ASSR_AS2);
-	#elif
-		CLR_BIT(ASSR, ASSR_AS2);
-	#endif
+//	#if TIMER2_EXTERNAL_CLK == ENABLE
+//		SET_BIT(ASSR, ASSR_AS2);
+//	#elif
+//		CLR_BIT(ASSR, ASSR_AS2);
+//	#endif
 	/*Set Configurable Modes*/
 		#if TIMER2_WAVEFORM_GENERATION_MODE == TIMER_NORMAL_MODE
 

@@ -382,7 +382,6 @@ u8 USART_u8SendStringSynch(u8 *Copy_pu8String)
     while (Copy_pu8String[Local_u32Index] != '\0')
     {
       Local_u8ErrorState = USART_u8SendData(Copy_pu8String[Local_u32Index]);
-      _delay_ms(50);
       Local_u32Index++;
       if (Local_u8ErrorState != OK)
       {

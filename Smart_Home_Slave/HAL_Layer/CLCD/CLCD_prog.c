@@ -152,7 +152,7 @@ void CLCD_vSendData(u8 Copy_u8Data)
 
   DIO_enumWritePinVal(CLCD_CONTROL_PORT, CLCD_RS, DIO_PIN_HIGH);
   DIO_enumWritePinVal(CLCD_CONTROL_PORT, CLCD_RW, DIO_PIN_LOW);
-  
+
 #if CLCD_DATA_NIBBLE == CLCD_HIGH_NIBBLE
 
   DIO_vWriteHighNibble(CLCD_DATA_PORT, (Copy_u8Data >> 4)); // send the most 4 bits of data to high nibbles
