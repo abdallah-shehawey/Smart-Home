@@ -191,7 +191,8 @@ void PassWord_Set(void)
 			USART_u8SendStringSynch("PassWord Must be More than 5 Char");
 			USART_u8SendData(0X0D);
 
-			USART_u8SendStringSynch("Set PassWord");
+			USART_u8SendStringSynch("Re Set PassWord");
+			USART_u8SendData(0X0D);
 			USART_u8SendStringSynch("Maximum char : 20");
 			USART_u8SendData(0X0D);
 			PassWord_Length = 0;

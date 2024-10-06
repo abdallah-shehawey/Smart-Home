@@ -22,10 +22,10 @@
 #include "../HAL_Layer/LED/LED_interface.h"
 #include "Security.h"
 
-#define While_Continue 1
+#define While_Continue   1
 #define While_Break      0
-#define Time_Out           100UL
-#define DUMMY_DATA 0XFF
+#define Time_Out         100UL
+#define DUMMY_DATA       0XFF
 
 volatile u8 While_Status1 = While_Continue , While_Status2 = While_Continue;
 volatile u8 Error_State, KPD_Press, SPI_Recieve;
@@ -37,8 +37,8 @@ extern u8 UserName[20];
 LED_config uCKitLed_1    =  {DIO_PORTA, DIO_PIN0, HIGH};
 LED_config uCKitLed_2    =  {DIO_PORTA, DIO_PIN1, HIGH};
 LED_config uCBedLed_1    =  {DIO_PORTA, DIO_PIN2, HIGH};
-LED_config uCBedLed_2   =  {DIO_PORTA, DIO_PIN3, HIGH};
-LED_config uCBthLed       =  {DIO_PORTA, DIO_PIN4, HIGH};
+LED_config uCBedLed_2    =  {DIO_PORTA, DIO_PIN3, HIGH};
+LED_config uCBthLed      =  {DIO_PORTA, DIO_PIN4, HIGH};
 LED_config uCCorLed_1    =  {DIO_PORTA, DIO_PIN5, HIGH};
 LED_config uCCorLed_2    =  {DIO_PORTA, DIO_PIN6, HIGH};
 LED_config uCStairLed    =  {DIO_PORTA, DIO_PIN7, HIGH};
@@ -80,18 +80,21 @@ void Bed_vFan();
 void Child_vFan();
 void Auto_Fan_Control();
 
+void Home_vSetting();
 void ISR_EXTI_Interrupt(void);
 
 
 void main()
 {
+	//Set Pin Direction
 	DIO_enumSetPortDir(DIO_PORTA, DIO_PORT_OUTPUT);
 	DIO_enumSetPortDir(DIO_PORTC, DIO_PORT_OUTPUT);
 	DIO_enumSetPortDir(DIO_PORTD, 0xFE);
 	DIO_enumSetPinDir(DIO_PORTB, DIO_PIN0, DIO_PIN_OUTPUT);
 	DIO_enumSetPinDir(DIO_PORTB, DIO_PIN1, DIO_PIN_OUTPUT);
-
+	//initialize USART to communicate with laptop with Baud Rate 9600
 	USART_vInit();
+	//initialize SPI to make 2 uC communicate with each other
 	SPI_vInit();
 	EEPROM_vInit();
 	DIO_enumSetPinDir(DIO_PORTB, DIO_PIN3, DIO_PIN_OUTPUT);
@@ -106,38 +109,43 @@ void main()
 	EXTI_vSetSignal(EXTI_ON_CHANGE, EXTI_LINE2);
 	EXTI_vSetCallBack(ISR_EXTI_Interrupt, EXTI_LINE2);
 	DIO_enumSetPinDir(DIO_PORTB, DIO_PIN2, DIO_PIN_INPUT);
-	//Sign_In();
+
+	Sign_In();
 	USART_u8SendStringSynch("Welcome ");
 	USART_u8SendStringSynch(UserName);
 	USART_u8SendData(0X0D);
 	while (1)
 	{
+		//Display Home Screen
 		USART_u8SendStringSynch("Select Room :");
-		USART_u8SendData(0X0D);
+		USART_u8SendData(0X0D);//new line 
 		USART_u8SendStringSynch("1 - Stair            ");
 		USART_u8SendStringSynch("2 - Reception");
-		USART_u8SendData(0X0D);
+		USART_u8SendData(0X0D);//new line
 		USART_u8SendStringSynch("3 - Salon            ");
 		USART_u8SendStringSynch("4 - Bed Room");
-		USART_u8SendData(0X0D);
+		USART_u8SendData(0X0D);//new line
 		USART_u8SendStringSynch("5 - Children Room 1  ");  //21
 		USART_u8SendStringSynch("6 - Children Room 2");
-		USART_u8SendData(0X0D);
+		USART_u8SendData(0X0D);//new line
 		USART_u8SendStringSynch("7 - Bath Room        ");
 		USART_u8SendStringSynch("8 - Kitchen");
-		USART_u8SendData(0X0D);
+		USART_u8SendData(0X0D);//new line
 		USART_u8SendStringSynch("9 - Corridor         ");
 		USART_u8SendStringSynch("10- Balacon");
-		USART_u8SendData(0X0D);
-		USART_u8SendStringSynch("11- Auto Fan Control");
-		USART_u8SendData(0x0D);
+		USART_u8SendData(0X0D);//new line 
+		USART_u8SendStringSynch("11- Auto Fan Control ");
+		USART_u8SendStringSynch("12- Setting");
+		USART_u8SendData(0x0D);//new line
 		do
 		{
+			//choose number from available choise
 			KPD_PressLength = 0, PressVal = 0;
 			while (1)
 			{
 				// get input from Laptop
 				Error_State = USART_u8ReceiveData(&KPD_Press);
+				//if user press on any button
 				if (Error_State == OK && KPD_PressLength == 0)
 				{
 					//if user press enter
@@ -219,12 +227,12 @@ void main()
 
 				}
 			}
-			if (PressVal > 11)
+			if (PressVal > 12)
 			{
 				USART_u8SendStringSynch("Invalid Choise");
 				USART_u8SendData(0X0D);
 			}
-		} while (PressVal > 11);
+		} while (PressVal > 12);
 
 		switch (PressVal)
 		{
@@ -261,6 +269,9 @@ void main()
 		case 11:
 			Auto_Fan_Control();
 			break;
+		case 12:
+			Home_vSetting();
+			break;
 		default :
 			break;
 		}
@@ -270,20 +281,19 @@ void main()
 //======================================================================================================================================//
 void Home_vStair()
 {
+	//Show stair Choises
 	USART_u8SendStringSynch("Stair Options : ");
-	USART_u8SendData(0X0D);
-
+	USART_u8SendData(0X0D);//new line
 	USART_u8SendStringSynch("1- Reception Door    ");
 	USART_u8SendStringSynch("2- Salon Door");
-	USART_u8SendData(0X0D);
+	USART_u8SendData(0X0D);//new line
 	USART_u8SendStringSynch("3- Open Doors        ");
 	USART_u8SendStringSynch("4- Close Doors");
-	USART_u8SendData(0X0D);
+	USART_u8SendData(0X0D);//new line
 	USART_u8SendStringSynch("5- Led ON/OFF");
-	USART_u8SendData(0X0D);
+	USART_u8SendData(0X0D);//new line
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -313,13 +323,12 @@ void Home_vStair()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 
 //======================================================================================================================================//
@@ -335,8 +344,7 @@ void Home_vReception()
 	USART_u8SendStringSynch("4- Rec Fan");
 	USART_u8SendData(0X0D);
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -358,13 +366,12 @@ void Home_vReception()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 
 //======================================================================================================================================//
@@ -379,8 +386,7 @@ void Home_vSalon()
 	USART_u8SendStringSynch("3- Rec Fan");
 	USART_u8SendData(0X0D);
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -398,13 +404,12 @@ void Home_vSalon()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Rec_vFan()
@@ -420,8 +425,7 @@ void Rec_vFan()
 	USART_u8SendStringSynch("5- Speed 4");
 	USART_u8SendData(0X0D);
 
-	While_Status2 = While_Continue;
-	while(While_Status2 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -454,13 +458,12 @@ void Rec_vFan()
 				USART_u8SendStringSynch("3- Led3 ON/OFF       ");
 				USART_u8SendStringSynch("4- Rec Fan");
 				USART_u8SendData(0X0D);
-				While_Status2 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Sal_vFan()
@@ -476,8 +479,7 @@ void Sal_vFan()
 	USART_u8SendStringSynch("5- Speed 4");
 	USART_u8SendData(0X0D);
 
-	While_Status2 = While_Continue;
-	while(While_Status2 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -501,7 +503,6 @@ void Sal_vFan()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status2 = While_Break;
 				USART_u8SendStringSynch("Salon Options : ");
 				USART_u8SendData(0X0D);
 
@@ -516,7 +517,7 @@ void Sal_vFan()
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 
 //======================================================================================================================================//
@@ -531,8 +532,7 @@ void Home_vBed_Room()
 	USART_u8SendStringSynch("3- Bed Fan");
 	USART_u8SendData(0X0D);
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -550,13 +550,12 @@ void Home_vBed_Room()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Bed_vFan()
@@ -572,8 +571,7 @@ void Bed_vFan()
 	USART_u8SendStringSynch("5- Speed 4");
 	USART_u8SendData(0X0D);
 
-	While_Status2 = While_Continue;
-	while(While_Status2 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -597,7 +595,6 @@ void Bed_vFan()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status2 = While_Break;
 				USART_u8SendStringSynch("Bed Room Options : ");
 				USART_u8SendData(0X0D);
 
@@ -611,7 +608,7 @@ void Bed_vFan()
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Home_vChildren_Room_1()
@@ -625,8 +622,7 @@ void Home_vChildren_Room_1()
 	USART_u8SendStringSynch("3- Child Fan");
 	USART_u8SendData(0X0D);
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -644,13 +640,12 @@ void Home_vChildren_Room_1()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Home_vChildren_Room_2()
@@ -664,8 +659,7 @@ void Home_vChildren_Room_2()
 	USART_u8SendStringSynch("3- Child Fan");
 	USART_u8SendData(0X0D);
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -683,13 +677,12 @@ void Home_vChildren_Room_2()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Child_vFan()
@@ -705,8 +698,7 @@ void Child_vFan()
 	USART_u8SendStringSynch("5- Speed 4");
 	USART_u8SendData(0X0D);
 
-	While_Status2 = While_Continue;
-	while(While_Status2 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -730,10 +722,8 @@ void Child_vFan()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status2 = While_Break;
 				USART_u8SendStringSynch("Children Room Options : ");
 				USART_u8SendData(0X0D);
-
 				USART_u8SendStringSynch("1- Led1 ON/OFF       ");
 				USART_u8SendStringSynch("2- Led2 ON/OFF");
 				USART_u8SendData(0X0D);
@@ -744,7 +734,7 @@ void Child_vFan()
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Home_vBath_Room()
@@ -755,8 +745,7 @@ void Home_vBath_Room()
 	USART_u8SendStringSynch("1- Led1 ON/OFF");
 	USART_u8SendData(0X0D);
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -768,13 +757,12 @@ void Home_vBath_Room()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Home_vKitchen()
@@ -788,8 +776,7 @@ void Home_vKitchen()
 	USART_u8SendStringSynch("3- Kitchen Fan");
 	USART_u8SendData(0X0D);
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -807,13 +794,12 @@ void Home_vKitchen()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Home_vCorridor()
@@ -825,8 +811,7 @@ void Home_vCorridor()
 	USART_u8SendStringSynch("2- Led2 ON/OFF");
 	USART_u8SendData(0X0D);
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -847,7 +832,7 @@ void Home_vCorridor()
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Home_vBalacon()
@@ -862,8 +847,7 @@ void Home_vBalacon()
 	USART_u8SendStringSynch("4- Led2 ON/OFF");
 	USART_u8SendData(0X0D);
 
-	While_Status1 = While_Continue;
-	while(While_Status1 == While_Continue)
+	do
 	{
 		Error_State = USART_u8ReceiveData(&KPD_Press);
 		if (Error_State == OK)
@@ -884,13 +868,12 @@ void Home_vBalacon()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
 			}
 		}
-	}
+	}while (KPD_Press != 0X0D);
 }
 //======================================================================================================================================//
 void Reception_Door(void)
@@ -917,7 +900,6 @@ void Reception_Door(void)
 				USART_u8SendData(0X0D);
 				USART_u8SendStringSynch("Stair Options : ");
 				USART_u8SendData(0X0D);
-
 				USART_u8SendStringSynch("1- Reception Door    ");
 				USART_u8SendStringSynch("2- Salon Door");
 				USART_u8SendData(0X0D);
@@ -958,7 +940,6 @@ void Salon_Door()
 				USART_u8SendData(0X0D);
 				USART_u8SendStringSynch("Stair Options : ");
 				USART_u8SendData(0X0D);
-
 				USART_u8SendStringSynch("1- Reception Door    ");
 				USART_u8SendStringSynch("2- Salon Door");
 				USART_u8SendData(0X0D);
@@ -1005,6 +986,75 @@ void Auto_Fan_Control()
 	}while (KPD_Press != 0x08);
 
 }
+//======================================================================================================================================//
+void Home_vSetting()
+{
+	USART_u8SendStringSynch("Setting:");
+	USART_u8SendData(0X0D);
+	USART_u8SendStringSynch("1- Change UserName");
+	USART_u8SendData(0X0D);
+	USART_u8SendStringSynch("2- Change PassWord");
+	USART_u8SendData(0X0D);
+	USART_u8SendStringSynch("2- Change UserName & PassWord");
+	USART_u8SendData(0X0D);
+	do
+	{
+		Error_State = USART_u8ReceiveData(&KPD_Press);
+		if (Error_State == OK)
+		{
+			switch (KPD_Press)
+			{
+			case '1':
+				USART_u8SendData(0X0D);
+				EEPROM_vWrite(EEPROM_UserNameStatus, 0XFF);
+				UserName_Set();
+				USART_u8SendStringSynch("Setting:");
+				USART_u8SendData(0X0D);
+				USART_u8SendStringSynch("1- Change UserName");
+				USART_u8SendData(0X0D);
+				USART_u8SendStringSynch("2- Change PassWord");
+				USART_u8SendData(0X0D);
+				USART_u8SendStringSynch("2- Change UserName & PassWord");
+				USART_u8SendData(0X0D);
+				break;
+			case '2':
+				USART_u8SendData(0X0D);
+				EEPROM_vWrite(EEPROM_PassWordStatus, 0XFF);
+				PassWord_Set();
+				USART_u8SendStringSynch("Setting:");
+				USART_u8SendData(0X0D);
+				USART_u8SendStringSynch("1- Change UserName");
+				USART_u8SendData(0X0D);
+				USART_u8SendStringSynch("2- Change PassWord");
+				USART_u8SendData(0X0D);
+				USART_u8SendStringSynch("2- Change UserName & PassWord");
+				USART_u8SendData(0X0D);
+				break;
+			case '3':
+				USART_u8SendData(0X0D);
+				EEPROM_vWrite(EEPROM_UserNameStatus, 0XFF);
+				EEPROM_vWrite(EEPROM_PassWordStatus, 0XFF);
+				UserName_Set();
+				PassWord_Set();
+				USART_u8SendStringSynch("Setting:");
+				USART_u8SendData(0X0D);
+				USART_u8SendStringSynch("1- Change UserName");
+				USART_u8SendData(0X0D);
+				USART_u8SendStringSynch("2- Change PassWord");
+				USART_u8SendData(0X0D);
+				USART_u8SendStringSynch("2- Change UserName & PassWord");
+				USART_u8SendData(0X0D);
+				break;
+			case 0x08 :
+				USART_u8SendData(0X0D);
+				break;
+			default :
+				break;
+			}
+		}
+	}while (KPD_Press != 0x08);
+}
+
 //======================================================================================================================================//
 
 void ISR_EXTI_Interrupt(void)
