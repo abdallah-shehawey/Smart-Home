@@ -32,6 +32,7 @@ volatile u8 Error_State, KPD_Press, SPI_Recieve;
 volatile u8 KPD_PressLength = 0,  PressVal = 0;
 volatile u8 Error_Time_Out = 0;
 extern u8 UserName[20];
+volatile u8 OneTimeFlag = 1, STOP_Flag = 1;
 
 //PORTA_PIN
 LED_config uCKitLed_1    =  {DIO_PORTA, DIO_PIN0, HIGH};
@@ -110,12 +111,31 @@ void main()
 	EXTI_vSetCallBack(ISR_EXTI_Interrupt, EXTI_LINE2);
 	DIO_enumSetPinDir(DIO_PORTB, DIO_PIN2, DIO_PIN_INPUT);
 
-	Sign_In();
-	USART_u8SendStringSynch("Welcome ");
-	USART_u8SendStringSynch(UserName);
-	USART_u8SendData(0X0D);
 	while (1)
 	{
+		if (OneTimeFlag == 1)
+		{
+			Error_Time_Out = 0;
+			STOP_Flag = 1;
+			USART_u8SendStringSynch("Press enter to open system");
+			USART_u8SendData(0X0D);
+			do
+			{
+				Error_State = USART_u8ReceiveData(&KPD_Press);
+				if (Error_State == OK)
+				{
+					if (KPD_Press == 0X0D)
+					{
+						break;
+					}
+				}
+			}while (1);
+			Sign_In();
+			USART_u8SendStringSynch("Welcome ");
+			USART_u8SendStringSynch(UserName);
+			USART_u8SendData(0X0D);
+			OneTimeFlag = 0;
+		}
 		//Display Home Screen
 		USART_u8SendStringSynch("Select Room :");
 		USART_u8SendData(0X0D);//new line 
@@ -136,6 +156,8 @@ void main()
 		USART_u8SendData(0X0D);//new line 
 		USART_u8SendStringSynch("11- Auto Fan Control ");
 		USART_u8SendStringSynch("12- Setting");
+		USART_u8SendData(0x0D);//new line
+		USART_u8SendStringSynch("13- EXIT");
 		USART_u8SendData(0x0D);//new line
 		do
 		{
@@ -211,28 +233,33 @@ void main()
 						KPD_PressLength++;
 					}
 				}
-				//				else if (Error_State == TIMEOUT_STATE)
-				//				{
-				//					Error_Time_Out ++;
-				//					if (Error_Time_Out == Time_Out)
-				//					{
-				//						Error_Time_Out = 0;
-				//						USART_u8SendData(0X0D);
-				//						USART_u8SendStringSynch("Time Out");
-				//						break;
-				//					}
-				//				}
+				else if (Error_State == TIMEOUT_STATE)
+				{
+					if (Error_Time_Out == Time_Out)
+					{
+						USART_u8SendData(0X0D);
+						if (STOP_Flag == 1)
+						{
+							USART_u8SendStringSynch("Session Time Out");
+							STOP_Flag = 0;
+						}
+						USART_u8SendData(0X0D);
+						OneTimeFlag = 1;
+						break;
+					}
+					Error_Time_Out ++;
+				}
 				else
 				{
 
 				}
 			}
-			if (PressVal > 12)
+			if (PressVal > 13)
 			{
 				USART_u8SendStringSynch("Invalid Choise");
 				USART_u8SendData(0X0D);
 			}
-		} while (PressVal > 12);
+		} while (PressVal > 13);
 
 		switch (PressVal)
 		{
@@ -272,6 +299,9 @@ void main()
 		case 12:
 			Home_vSetting();
 			break;
+		case 13 :
+			OneTimeFlag = 1;
+			break;
 		default :
 			break;
 		}
@@ -303,10 +333,12 @@ void Home_vStair()
 			case '1':
 				USART_u8SendData(0X0D);
 				Reception_Door();
+				KPD_Press = NOTPRESSED;
 				break;
 			case '2':
 				USART_u8SendData(0X0D);
 				Salon_Door();
+				KPD_Press = NOTPRESSED;
 				break;
 			case '3' :
 				SPI_u8Tranceive(0x01, &SPI_Recieve);
@@ -328,7 +360,23 @@ void Home_vStair()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 
 //======================================================================================================================================//
@@ -363,6 +411,7 @@ void Home_vReception()
 			case '4':
 				USART_u8SendData(0X0D);
 				Rec_vFan();
+				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
@@ -371,7 +420,23 @@ void Home_vReception()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 
 //======================================================================================================================================//
@@ -401,6 +466,7 @@ void Home_vSalon()
 				break;
 			case '3' :
 				Sal_vFan();
+				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
@@ -409,7 +475,23 @@ void Home_vSalon()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0x08);
 }
 //======================================================================================================================================//
 void Rec_vFan()
@@ -463,7 +545,23 @@ void Rec_vFan()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Sal_vFan()
@@ -517,7 +615,23 @@ void Sal_vFan()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 
 //======================================================================================================================================//
@@ -547,6 +661,7 @@ void Home_vBed_Room()
 				break;
 			case '3':
 				Bed_vFan();
+				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
@@ -555,7 +670,23 @@ void Home_vBed_Room()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Bed_vFan()
@@ -608,7 +739,23 @@ void Bed_vFan()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Home_vChildren_Room_1()
@@ -637,6 +784,7 @@ void Home_vChildren_Room_1()
 				break;
 			case '3' :
 				Child_vFan();
+				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
@@ -645,7 +793,23 @@ void Home_vChildren_Room_1()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Home_vChildren_Room_2()
@@ -674,6 +838,7 @@ void Home_vChildren_Room_2()
 				break;
 			case '3' :
 				Child_vFan();
+				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
@@ -681,6 +846,22 @@ void Home_vChildren_Room_2()
 			default :
 				break;
 			}
+		}
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
 		}
 	}while (KPD_Press != 0X0D);
 }
@@ -734,7 +915,23 @@ void Child_vFan()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Home_vBath_Room()
@@ -762,7 +959,23 @@ void Home_vBath_Room()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Home_vKitchen()
@@ -799,7 +1012,23 @@ void Home_vKitchen()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Home_vCorridor()
@@ -832,7 +1061,23 @@ void Home_vCorridor()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Home_vBalacon()
@@ -873,7 +1118,23 @@ void Home_vBalacon()
 				break;
 			}
 		}
-	}while (KPD_Press != 0X0D);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Reception_Door(void)
@@ -913,7 +1174,23 @@ void Reception_Door(void)
 				break;
 			}
 		}
-	}while (KPD_Press != 0x08);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Salon_Door()
@@ -953,7 +1230,23 @@ void Salon_Door()
 				break;
 			}
 		}
-	}while (KPD_Press != 0x08);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 //======================================================================================================================================//
 void Auto_Fan_Control()
@@ -982,6 +1275,22 @@ void Auto_Fan_Control()
 			default :
 				break;
 			}
+		}
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
 		}
 	}while (KPD_Press != 0x08);
 
@@ -1052,7 +1361,23 @@ void Home_vSetting()
 				break;
 			}
 		}
-	}while (KPD_Press != 0x08);
+		else if (Error_State == TIMEOUT_STATE)
+		{
+			if (Error_Time_Out == Time_Out)
+			{
+				USART_u8SendData(0X0D);
+				if (STOP_Flag == 1)
+				{
+					USART_u8SendStringSynch("Session Time Out");
+					STOP_Flag = 0;
+				}
+				USART_u8SendData(0X0D);
+				OneTimeFlag = 1;
+				break;
+			}
+			Error_Time_Out ++;
+		}
+	}while (KPD_Press != 0X08);
 }
 
 //======================================================================================================================================//

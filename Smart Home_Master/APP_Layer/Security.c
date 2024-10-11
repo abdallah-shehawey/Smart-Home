@@ -349,9 +349,13 @@ void UserName_Check(void)
 	// Check if UserName is correct or not
 	if (CheckLength == UserName_Length)
 	{
-		for (u8 i = 0; i < UserName_Length; i++)
+		for (u8 i = 0; i <= PassWord_Length; i++)
 		{
-			if (Check[i] != EEPROM_vRead(EEPROM_UserNameStartLocation + i))
+			if (Check[i] == '\0')
+			{
+				break;
+			}
+			else if (Check[i] != EEPROM_vRead(EEPROM_UserNameStartLocation + i))
 			{
 				UserName_Check_Flag = 0; // if it false make this flag to zero
 			}
@@ -446,6 +450,10 @@ void PassWord_Check(void)
 	{
 		for (u8 i = 0; i < PassWord_Length; i++)
 		{
+			if (Check[i] == '\0')
+			{
+				break;
+			}
 			if (Check[i] != EEPROM_vRead(EEPROM_PassWordStartLocation + i))
 			{
 				PassWord_Check_Flag = 0; //if the pasword is uncorrect make this flag to zero
