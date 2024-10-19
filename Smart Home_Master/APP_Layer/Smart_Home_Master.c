@@ -22,18 +22,21 @@
 #include "../HAL_Layer/LED/LED_interface.h"
 #include "Security.h"
 
-#define While_Continue   1
-#define While_Break      0
-#define Time_Out         100UL
-#define DUMMY_DATA       0XFF
+//Used Flags
+typedef struct
+{
+	unsigned char OneTimeFlag : 1;
+	unsigned char STOP_Flag : 1;
+}Flags_structConfig;
 
-volatile u8 While_Status1 = While_Continue , While_Status2 = While_Continue;
+#define Time_Out               100UL  //Maximum Time Allow when not press any thing
+
 volatile u8 Error_State, KPD_Press, SPI_Recieve;
 volatile u8 KPD_PressLength = 0,  PressVal = 0;
-volatile u8 Error_Time_Out = 0;
-extern u8 UserName[20];
-volatile u8 OneTimeFlag = 1, STOP_Flag = 1;
+volatile u8 Error_Time_Out = 0;  // To count time out allow for user
+extern  u8 UserName[20];          // extern user name which intern with user to show on system
 
+//Lamps Pin
 //PORTA_PIN
 LED_config uCKitLed_1    =  {DIO_PORTA, DIO_PIN0, HIGH};
 LED_config uCKitLed_2    =  {DIO_PORTA, DIO_PIN1, HIGH};
@@ -61,7 +64,10 @@ LED_config uCCh_1_Led_2  =  {DIO_PORTC, DIO_PIN4, HIGH};
 LED_config uCCh_2_Led_1  =  {DIO_PORTC, DIO_PIN5, HIGH};
 LED_config uCCh_2_Led_2  =  {DIO_PORTC, DIO_PIN6, HIGH};
 
+//Default flags value
+Flags_structConfig Flags = {1, 1};
 
+//function proto type
 void Home_vStair();
 void Home_vReception();
 void Home_vSalon();
@@ -72,9 +78,9 @@ void Home_vBath_Room();
 void Home_vKitchen();
 void Home_vCorridor();
 void Home_vBalacon();
+
 void Reception_Door();
 void Salon_Door();
-
 void Rec_vFan();
 void Sal_vFan();
 void Bed_vFan();
@@ -82,7 +88,7 @@ void Child_vFan();
 void Auto_Fan_Control();
 
 void Home_vSetting();
-void ISR_EXTI_Interrupt(void);
+void ISR_EXTI_Interrupt(void); //ISR function name for external interrupt
 
 
 void main()
@@ -95,28 +101,32 @@ void main()
 	DIO_enumSetPinDir(DIO_PORTB, DIO_PIN1, DIO_PIN_OUTPUT);
 	//initialize USART to communicate with laptop with Baud Rate 9600
 	USART_vInit();
-	//initialize SPI to make 2 uC communicate with each other
+	//initialize SPI to make 2uC communicate with each other
 	SPI_vInit();
+	//Check EEPROM for password and username and tries left
 	EEPROM_vInit();
+	//set Timer0 Output PIN
 	DIO_enumSetPinDir(DIO_PORTB, DIO_PIN3, DIO_PIN_OUTPUT);
 	TIMER0_vInit();
-	//	DIO_enumSetPinDir(DIO_PORTD, DIO_PIN5, DIO_PIN_OUTPUT);
-	//	TIMER1_vInit();
+	//set Timer2 Output PIN
 	DIO_enumSetPinDir(DIO_PORTD, DIO_PIN7, DIO_PIN_OUTPUT);
 	TIMER2_vInit();
-
+	//SET I-Bit to enable Interrupt
 	GIE_vEnable();
+	//SET INT2 to execute on change on pin
 	EXTI_vEnableInterrupt(EXTI_LINE2);
 	EXTI_vSetSignal(EXTI_ON_CHANGE, EXTI_LINE2);
+	//Set Call Back Function for ISR to INT2
 	EXTI_vSetCallBack(ISR_EXTI_Interrupt, EXTI_LINE2);
 	DIO_enumSetPinDir(DIO_PORTB, DIO_PIN2, DIO_PIN_INPUT);
 
 	while (1)
 	{
-		if (OneTimeFlag == 1)
+		//if System is close and user want to open system
+		if (Flags.OneTimeFlag == 1)
 		{
 			Error_Time_Out = 0;
-			STOP_Flag = 1;
+			Flags.STOP_Flag = 1;
 			USART_u8SendStringSynch("Press enter to open system");
 			USART_u8SendData(0X0D);
 			do
@@ -129,12 +139,14 @@ void main()
 						break;
 					}
 				}
-			}while (1);
+			}while (1); //go into infinite loop until press enter
+			//Check username and password
 			Sign_In();
+			//print hello message
 			USART_u8SendStringSynch("Welcome ");
 			USART_u8SendStringSynch(UserName);
-			USART_u8SendData(0X0D);
-			OneTimeFlag = 0;
+			USART_u8SendData(0X0D); // make new line
+			Flags.OneTimeFlag = 0; // to print it one time which system is open
 		}
 		//Display Home Screen
 		USART_u8SendStringSynch("Select Room :");
@@ -145,7 +157,7 @@ void main()
 		USART_u8SendStringSynch("3 - Salon            ");
 		USART_u8SendStringSynch("4 - Bed Room");
 		USART_u8SendData(0X0D);//new line
-		USART_u8SendStringSynch("5 - Children Room 1  ");  //21
+		USART_u8SendStringSynch("5 - Children Room 1  ");
 		USART_u8SendStringSynch("6 - Children Room 2");
 		USART_u8SendData(0X0D);//new line
 		USART_u8SendStringSynch("7 - Bath Room        ");
@@ -235,16 +247,17 @@ void main()
 				}
 				else if (Error_State == TIMEOUT_STATE)
 				{
+					//when user not press any thing for some time system will close automatic
 					if (Error_Time_Out == Time_Out)
 					{
 						USART_u8SendData(0X0D);
-						if (STOP_Flag == 1)
+						if (Flags.STOP_Flag == 1)
 						{
 							USART_u8SendStringSynch("Session Time Out");
-							STOP_Flag = 0;
+							Flags.STOP_Flag = 0;
 						}
 						USART_u8SendData(0X0D);
-						OneTimeFlag = 1;
+						Flags.OneTimeFlag = 1;
 						break;
 					}
 					Error_Time_Out ++;
@@ -254,13 +267,15 @@ void main()
 
 				}
 			}
+			//if user choose any thing out available choose
 			if (PressVal > 13)
 			{
 				USART_u8SendStringSynch("Invalid Choise");
 				USART_u8SendData(0X0D);
 			}
-		} while (PressVal > 13);
+		} while (PressVal > 13); //get into infinite loop until user not choose available number
 
+		//check chosen number to open its function
 		switch (PressVal)
 		{
 		case 1 :
@@ -300,7 +315,7 @@ void main()
 			Home_vSetting();
 			break;
 		case 13 :
-			OneTimeFlag = 1;
+			Flags.OneTimeFlag = 1;
 			break;
 		default :
 			break;
@@ -365,13 +380,13 @@ void Home_vStair()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -425,13 +440,13 @@ void Home_vReception()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -480,13 +495,13 @@ void Home_vSalon()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -550,13 +565,13 @@ void Rec_vFan()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -620,13 +635,13 @@ void Sal_vFan()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -675,13 +690,13 @@ void Home_vBed_Room()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -744,13 +759,13 @@ void Bed_vFan()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -798,13 +813,13 @@ void Home_vChildren_Room_1()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -852,13 +867,13 @@ void Home_vChildren_Room_2()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -920,13 +935,13 @@ void Child_vFan()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -964,13 +979,13 @@ void Home_vBath_Room()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -1017,13 +1032,13 @@ void Home_vKitchen()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -1055,7 +1070,6 @@ void Home_vCorridor()
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
-				While_Status1 = While_Break;
 				break;
 			default :
 				break;
@@ -1066,13 +1080,13 @@ void Home_vCorridor()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -1123,13 +1137,13 @@ void Home_vBalacon()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -1179,13 +1193,13 @@ void Reception_Door(void)
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -1235,13 +1249,13 @@ void Salon_Door()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -1281,13 +1295,13 @@ void Auto_Fan_Control()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -1366,13 +1380,13 @@ void Home_vSetting()
 			if (Error_Time_Out == Time_Out)
 			{
 				USART_u8SendData(0X0D);
-				if (STOP_Flag == 1)
+				if (Flags.STOP_Flag == 1)
 				{
 					USART_u8SendStringSynch("Session Time Out");
-					STOP_Flag = 0;
+					Flags.STOP_Flag = 0;
 				}
 				USART_u8SendData(0X0D);
-				OneTimeFlag = 1;
+				Flags.OneTimeFlag = 1;
 				break;
 			}
 			Error_Time_Out ++;
@@ -1405,5 +1419,4 @@ void ISR_EXTI_Interrupt(void)
 	LED_vTog(uCCh_1_Led_2);
 	LED_vTog(uCCh_2_Led_1);
 	LED_vTog(uCCh_2_Led_2);
-	_delay_ms(100);
 }

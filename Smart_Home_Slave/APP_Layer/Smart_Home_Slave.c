@@ -36,6 +36,7 @@ void Kitch_Fan_Control();
 volatile u8 Error_State, SPI_Recieve, Temp_Flag = 0;
 LM35_Config LM35 = {ADC_CHANNEL0, 5, ADC_RES_10_BIT};
 volatile u8 LM35_Temp = 0, Temp_Detect = 0, Rec_Fan_Save_State = 0, Ret_Rec_Fan_State_Flag = 0, Fire_Flag = 0;
+volatile u8 FireNum_Flag = 0;
 void main()
 {
 	DIO_enumSetPinDir(DIO_PORTA, Auto_Fan, DIO_PIN_OUTPUT);//Auto Fan Pin3
@@ -59,7 +60,7 @@ void main()
 	DIO_enumWritePinVal(DIO_PORTD, DIO_PIN0, DIO_HIGH);
 	DIO_enumWritePinVal(DIO_PORTD, DIO_PIN1, DIO_HIGH);
 
-	DIO_enumWritePinVal(DIO_PORTA, DIO_PIN1, DIO_HIGH);
+	DIO_enumWritePinVal(DIO_PORTA, DIO_PIN1, DIO_LOW);
 	DIO_enumWritePinVal(DIO_PORTA, Kitchen_Fan, DIO_LOW);
 
 
@@ -117,14 +118,34 @@ void main()
 			CLCD_vSendString("Fire Alarm");
 			DIO_enumTogglePinVal(DIO_PORTA, DIO_PIN1);
 			Fire_Flag = 1;
+			FireNum_Flag++;
+			if (FireNum_Flag == 250)
+			{
+				FireNum_Flag = 0;
+			}
+			_delay_ms(100);
 		}
 		else
 		{
+
 			if (Fire_Flag == 1)
 			{
+				if (FireNum_Flag % 2 != 0)
+				{
+					DIO_enumTogglePinVal(DIO_PORTA, DIO_PIN1);
+				}
+				else
+				{
+
+				}
 				CLCD_vSetPosition(2, 1);
 				CLCD_vSendString("           ");
 				Fire_Flag = 0;
+				FireNum_Flag = 0;
+			}
+			else
+			{
+
 			}
 		}
 	}
