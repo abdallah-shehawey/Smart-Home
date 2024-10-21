@@ -347,28 +347,34 @@ void Home_vStair()
 			{
 			case '1':
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				Reception_Door();
 				KPD_Press = NOTPRESSED;
 				break;
 			case '2':
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				Salon_Door();
 				KPD_Press = NOTPRESSED;
 				break;
 			case '3' :
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x01, &SPI_Recieve);
 				_delay_ms(50);
 				SPI_u8Tranceive(0x03, &SPI_Recieve);
 				break;
 			case '4' :
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x02, &SPI_Recieve);
 				_delay_ms(50);
 				SPI_u8Tranceive(0x04, &SPI_Recieve);
 				break;
 			case '5':
+				Error_Time_Out = 0;
 				LED_vTog(uCStairLed);
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				break;
 			default :
@@ -415,20 +421,25 @@ void Home_vReception()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				LED_vTog(uCRecLed_1);
 				break;
 			case '2':
+				Error_Time_Out = 0;
 				LED_vTog(uCRecLed_2);
 				break;
 			case '3':
+				Error_Time_Out = 0;
 				LED_vTog(uCRecLed_3);
 				break;
 			case '4':
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				Rec_vFan();
 				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				break;
 			default :
@@ -474,16 +485,20 @@ void Home_vSalon()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				LED_vTog(uCSalLed_1);
 				break;
 			case '2':
+				Error_Time_Out = 0;
 				LED_vTog(uCSalLed_2);
 				break;
 			case '3' :
+				Error_Time_Out = 0;
 				Sal_vFan();
 				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				break;
 			default :
@@ -530,21 +545,27 @@ void Rec_vFan()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x05, &SPI_Recieve);
 				break;
 			case '2':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x06, &SPI_Recieve);
 				break;
 			case '3':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x07, &SPI_Recieve);
 				break;
 			case '4':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x08, &SPI_Recieve);
 				break;
 			case '5':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x09, &SPI_Recieve);
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				USART_u8SendStringSynch("Reception Options : ");
 				USART_u8SendData(0X0D);
@@ -600,21 +621,27 @@ void Sal_vFan()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x0A, &SPI_Recieve);
 				break;
 			case '2':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x0B, &SPI_Recieve);
 				break;
 			case '3':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x0C, &SPI_Recieve);
 				break;
 			case '4':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x0D, &SPI_Recieve);
 				break;
 			case '5':
+				Error_Time_Out = 0;
 				SPI_u8Tranceive(0x0E, &SPI_Recieve);
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				USART_u8SendStringSynch("Salon Options : ");
 				USART_u8SendData(0X0D);
@@ -669,16 +696,20 @@ void Home_vBed_Room()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				LED_vTog(uCBedLed_1);
 				break;
 			case '2':
+				Error_Time_Out = 0;
 				LED_vTog(uCBedLed_2);
 				break;
 			case '3':
+				Error_Time_Out = 0;
 				Bed_vFan();
 				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				break;
 			default :
@@ -725,21 +756,27 @@ void Bed_vFan()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				TIMER0_vSetCTC(0);
 				break;
 			case '2':
+				Error_Time_Out = 0;
 				TIMER0_vSetCTC(63);
 				break;
 			case '3':
+				Error_Time_Out = 0;
 				TIMER0_vSetCTC(126);
 				break;
 			case '4':
+				Error_Time_Out = 0;
 				TIMER0_vSetCTC(189);
 				break;
 			case '5':
+				Error_Time_Out = 0;
 				TIMER0_vSetCTC(255);
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				USART_u8SendStringSynch("Bed Room Options : ");
 				USART_u8SendData(0X0D);
@@ -792,16 +829,20 @@ void Home_vChildren_Room_1()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				LED_vTog(uCCh_1_Led_1);
 				break;
 			case '2':
+				Error_Time_Out = 0;
 				LED_vTog(uCCh_1_Led_2);
 				break;
 			case '3' :
+				Error_Time_Out = 0;
 				Child_vFan();
 				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				break;
 			default :
@@ -846,16 +887,20 @@ void Home_vChildren_Room_2()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				LED_vTog(uCCh_2_Led_1);
 				break;
 			case '2':
+				Error_Time_Out = 0;
 				LED_vTog(uCCh_2_Led_2);
 				break;
 			case '3' :
+				Error_Time_Out = 0;
 				Child_vFan();
 				KPD_Press = NOTPRESSED;
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				break;
 			default :
@@ -902,21 +947,27 @@ void Child_vFan()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				TIMER2_vSetCTC(0);
 				break;
 			case '2':
+				Error_Time_Out = 0;
 				TIMER2_vSetCTC(63);
 				break;
 			case '3':
+				Error_Time_Out = 0;
 				TIMER2_vSetCTC(126);
 				break;
 			case '4':
+				Error_Time_Out = 0;
 				TIMER2_vSetCTC(189);
 				break;
 			case '5':
+				Error_Time_Out = 0;
 				TIMER2_vSetCTC(255);
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				USART_u8SendStringSynch("Children Room Options : ");
 				USART_u8SendData(0X0D);
@@ -965,9 +1016,11 @@ void Home_vBath_Room()
 			switch (KPD_Press)
 			{
 			case '1':
+				Error_Time_Out = 0;
 				LED_vTog(uCBthLed);
 				break;
 			case 0x08 :
+				Error_Time_Out = 0;
 				USART_u8SendData(0X0D);
 				break;
 			default :
@@ -1013,15 +1066,19 @@ void Home_vKitchen()
 			{
 			case '1':
 				LED_vTog(uCKitLed_1);
+				Error_Time_Out = 0;
 				break;
 			case '2':
 				LED_vTog(uCKitLed_2);
+				Error_Time_Out = 0;
 				break;
 			case '3' :
 				SPI_u8Tranceive(0x0F, SPI_Recieve);
+				Error_Time_Out = 0;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				break;
 			default :
 				break;
@@ -1064,12 +1121,15 @@ void Home_vCorridor()
 			{
 			case '1':
 				LED_vTog(uCCorLed_1);
+				Error_Time_Out = 0;
 				break;
 			case '2':
 				LED_vTog(uCCorLed_2);
+				Error_Time_Out = 0;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				break;
 			default :
 				break;
@@ -1115,18 +1175,23 @@ void Home_vBalacon()
 			{
 			case '1':
 				LED_vTog(uCBalLed_1);
+				Error_Time_Out = 0;
 				break;
 			case '2':
 				LED_vTog(uCBalLed_2);
+				Error_Time_Out = 0;
 				break;
 			case '3':
 				LED_vTog(uCBalLed_3);
+				Error_Time_Out = 0;
 				break;
 			case '4':
 				LED_vTog(uCBalLed_4);
+				Error_Time_Out = 0;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				break;
 			default :
 				break;
@@ -1167,9 +1232,11 @@ void Reception_Door(void)
 			{
 			case '1':
 				SPI_u8Tranceive(0x01, &SPI_Recieve);
+				Error_Time_Out = 0;
 				break;
 			case '2':
 				SPI_u8Tranceive(0x02, &SPI_Recieve);
+				Error_Time_Out = 0;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
@@ -1223,9 +1290,11 @@ void Salon_Door()
 			{
 			case '1':
 				SPI_u8Tranceive(0x03, &SPI_Recieve);
+				Error_Time_Out = 0;
 				break;
 			case '2':
 				SPI_u8Tranceive(0x04, &SPI_Recieve);
+				Error_Time_Out = 0;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
@@ -1279,12 +1348,15 @@ void Auto_Fan_Control()
 			{
 			case '1':
 				SPI_u8Tranceive(0x10, &SPI_Recieve);
+				Error_Time_Out = 0;
 				break;
 			case '2':
 				SPI_u8Tranceive(0x11, &SPI_Recieve);
+				Error_Time_Out = 0;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				break;
 			default :
 				break;
@@ -1339,6 +1411,7 @@ void Home_vSetting()
 				USART_u8SendData(0X0D);
 				USART_u8SendStringSynch("2- Change UserName & PassWord");
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				break;
 			case '2':
 				USART_u8SendData(0X0D);
@@ -1352,6 +1425,7 @@ void Home_vSetting()
 				USART_u8SendData(0X0D);
 				USART_u8SendStringSynch("2- Change UserName & PassWord");
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				break;
 			case '3':
 				USART_u8SendData(0X0D);
@@ -1367,9 +1441,11 @@ void Home_vSetting()
 				USART_u8SendData(0X0D);
 				USART_u8SendStringSynch("2- Change UserName & PassWord");
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				break;
 			case 0x08 :
 				USART_u8SendData(0X0D);
+				Error_Time_Out = 0;
 				break;
 			default :
 				break;

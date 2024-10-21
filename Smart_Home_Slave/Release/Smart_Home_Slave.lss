@@ -2285,7 +2285,7 @@ Disassembly of section .text:
     11dc:	88 7f       	andi	r24, 0xF8	; 248
     11de:	83 bf       	out	0x33, r24	; 51
     11e0:	83 b7       	in	r24, 0x33	; 51
-    11e2:	85 60       	ori	r24, 0x05	; 5
+    11e2:	84 60       	ori	r24, 0x04	; 4
     11e4:	83 bf       	out	0x33, r24	; 51
     11e6:	08 95       	ret
 
@@ -2363,7 +2363,7 @@ Disassembly of section .text:
     1270:	88 7f       	andi	r24, 0xF8	; 248
     1272:	85 bd       	out	0x25, r24	; 37
     1274:	85 b5       	in	r24, 0x25	; 37
-    1276:	85 60       	ori	r24, 0x05	; 5
+    1276:	84 60       	ori	r24, 0x04	; 4
     1278:	85 bd       	out	0x25, r24	; 37
     127a:	08 95       	ret
 
@@ -5556,8 +5556,8 @@ Disassembly of section .text:
     2c18:	8a 3f       	cpi	r24, 0xFA	; 250
     2c1a:	11 f4       	brne	.+4      	; 0x2c20 <main+0x1b6>
     2c1c:	10 92 c5 01 	sts	0x01C5, r1
-    2c20:	88 ee       	ldi	r24, 0xE8	; 232
-    2c22:	93 e0       	ldi	r25, 0x03	; 3
+    2c20:	80 ed       	ldi	r24, 0xD0	; 208
+    2c22:	97 e0       	ldi	r25, 0x07	; 7
     2c24:	fe 01       	movw	r30, r28
     2c26:	31 97       	sbiw	r30, 0x01	; 1
     2c28:	f1 f7       	brne	.-4      	; 0x2c26 <main+0x1bc>

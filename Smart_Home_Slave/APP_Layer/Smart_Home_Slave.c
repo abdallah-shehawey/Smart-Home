@@ -123,7 +123,7 @@ void main()
 			{
 				FireNum_Flag = 0;
 			}
-			_delay_ms(100);
+			_delay_ms(200);
 		}
 		else
 		{
