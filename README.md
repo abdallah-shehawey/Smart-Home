@@ -61,7 +61,7 @@ This project showcases my growing interest in embedded systems, and I’m excite
 - **Buzzer**
 - **LM35 Temperature Sensor**
 
-### GitHub Repository
+### LinkedIn Video
 
 [Smart Home Automation Project Video](https://www.linkedin.com/posts/abdallah-shehawey_smarthome-automation-embeddedsystems-activity-7254262439783899136-0IPK?utm_source=share&utm_medium=member_desktop)
 
