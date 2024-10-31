@@ -21,6 +21,7 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+APP_Layer/SECURITY \
 APP_Layer \
 HAL_Layer/LED \
 MCAL_Layer/DIO \
