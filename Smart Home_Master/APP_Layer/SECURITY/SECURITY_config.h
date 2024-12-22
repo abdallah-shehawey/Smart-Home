@@ -18,17 +18,17 @@
 #define PASSWORD_MAX_LENGTH 20
 
 /*
-*Optoins :-
+ *Optoins :-
   1- CLCD_OUTPUT
   2- TERMINAL_OUTPUT
-*/
+ */
 #define OUTPUT_SCREEN TERMINAL_OUTPUT
 
 /*
-*Optoins :-
+ *Optoins :-
   1- KPD_INPUT
   2- TERMINAL_INPUT
-*/
+ */
 #define INPUT_DATA    TERMINAL_INPUT
 
 /* EEPROM Functions Name */

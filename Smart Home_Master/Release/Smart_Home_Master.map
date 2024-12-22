@@ -135,7 +135,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x3292
+.text           0x00000000     0x32cc
  *(.vectors)
  .vectors       0x00000000       0x54 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vectors
@@ -454,89 +454,89 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .text.PassWord_Set
                 0x0000142e      0x150 ./APP_Layer/SECURITY/SECURITY_prog.o
                 0x0000142e                PassWord_Set
- .text.UserName_Set
-                0x0000157e      0x132 ./APP_Layer/SECURITY/SECURITY_prog.o
-                0x0000157e                UserName_Set
  .text.PassWord_Check
-                0x000016b0      0x104 ./APP_Layer/SECURITY/SECURITY_prog.o
-                0x000016b0                PassWord_Check
+                0x0000157e      0x104 ./APP_Layer/SECURITY/SECURITY_prog.o
+                0x0000157e                PassWord_Check
  .text.UserName_Check
-                0x000017b4      0x102 ./APP_Layer/SECURITY/SECURITY_prog.o
-                0x000017b4                UserName_Check
- .text.Sign_In  0x000018b6       0xa4 ./APP_Layer/SECURITY/SECURITY_prog.o
-                0x000018b6                Sign_In
+                0x00001682      0x102 ./APP_Layer/SECURITY/SECURITY_prog.o
+                0x00001682                UserName_Check
+ .text.Sign_In  0x00001784       0xa4 ./APP_Layer/SECURITY/SECURITY_prog.o
+                0x00001784                Sign_In
+ .text.UserName_Set
+                0x00001828      0x16c ./APP_Layer/SECURITY/SECURITY_prog.o
+                0x00001828                UserName_Set
  .text.EEPROM_vInit
-                0x0000195a       0xa8 ./APP_Layer/SECURITY/SECURITY_prog.o
-                0x0000195a                EEPROM_vInit
+                0x00001994       0xa8 ./APP_Layer/SECURITY/SECURITY_prog.o
+                0x00001994                EEPROM_vInit
  .text.ISR_EXTI_Interrupt
-                0x00001a02      0x152 ./APP_Layer/Smart_Home_Master.o
-                0x00001a02                ISR_EXTI_Interrupt
+                0x00001a3c      0x152 ./APP_Layer/Smart_Home_Master.o
+                0x00001a3c                ISR_EXTI_Interrupt
  .text.Home_vBalacon
-                0x00001b54      0x112 ./APP_Layer/Smart_Home_Master.o
-                0x00001b54                Home_vBalacon
+                0x00001b8e      0x112 ./APP_Layer/Smart_Home_Master.o
+                0x00001b8e                Home_vBalacon
  .text.Home_vCorridor
-                0x00001c66       0xce ./APP_Layer/Smart_Home_Master.o
-                0x00001c66                Home_vCorridor
+                0x00001ca0       0xce ./APP_Layer/Smart_Home_Master.o
+                0x00001ca0                Home_vCorridor
  .text.Home_vBath_Room
-                0x00001d34       0xb6 ./APP_Layer/Smart_Home_Master.o
-                0x00001d34                Home_vBath_Room
+                0x00001d6e       0xb6 ./APP_Layer/Smart_Home_Master.o
+                0x00001d6e                Home_vBath_Room
  .text.Home_vSetting
-                0x00001dea      0x150 ./APP_Layer/Smart_Home_Master.o
-                0x00001dea                Home_vSetting
+                0x00001e24      0x150 ./APP_Layer/Smart_Home_Master.o
+                0x00001e24                Home_vSetting
  .text.Auto_Fan_Control
-                0x00001f3a       0xbe ./APP_Layer/Smart_Home_Master.o
-                0x00001f3a                Auto_Fan_Control
+                0x00001f74       0xbe ./APP_Layer/Smart_Home_Master.o
+                0x00001f74                Auto_Fan_Control
  .text.Salon_Door
-                0x00001ff8      0x108 ./APP_Layer/Smart_Home_Master.o
-                0x00001ff8                Salon_Door
+                0x00002032      0x108 ./APP_Layer/Smart_Home_Master.o
+                0x00002032                Salon_Door
  .text.Reception_Door
-                0x00002100      0x108 ./APP_Layer/Smart_Home_Master.o
-                0x00002100                Reception_Door
+                0x0000213a      0x108 ./APP_Layer/Smart_Home_Master.o
+                0x0000213a                Reception_Door
  .text.Home_vKitchen
-                0x00002208       0xf8 ./APP_Layer/Smart_Home_Master.o
-                0x00002208                Home_vKitchen
+                0x00002242       0xf8 ./APP_Layer/Smart_Home_Master.o
+                0x00002242                Home_vKitchen
  .text.Sal_vFan
-                0x00002300      0x154 ./APP_Layer/Smart_Home_Master.o
-                0x00002300                Sal_vFan
+                0x0000233a      0x154 ./APP_Layer/Smart_Home_Master.o
+                0x0000233a                Sal_vFan
  .text.Home_vSalon
-                0x00002454      0x106 ./APP_Layer/Smart_Home_Master.o
-                0x00002454                Home_vSalon
+                0x0000248e      0x106 ./APP_Layer/Smart_Home_Master.o
+                0x0000248e                Home_vSalon
  .text.Rec_vFan
-                0x0000255a      0x154 ./APP_Layer/Smart_Home_Master.o
-                0x0000255a                Rec_vFan
+                0x00002594      0x154 ./APP_Layer/Smart_Home_Master.o
+                0x00002594                Rec_vFan
  .text.Home_vReception
-                0x000026ae      0x12c ./APP_Layer/Smart_Home_Master.o
-                0x000026ae                Home_vReception
+                0x000026e8      0x12c ./APP_Layer/Smart_Home_Master.o
+                0x000026e8                Home_vReception
  .text.Home_vStair
-                0x000027da      0x17e ./APP_Layer/Smart_Home_Master.o
-                0x000027da                Home_vStair
+                0x00002814      0x17e ./APP_Layer/Smart_Home_Master.o
+                0x00002814                Home_vStair
  .text.Child_vFan
-                0x00002958      0x148 ./APP_Layer/Smart_Home_Master.o
-                0x00002958                Child_vFan
+                0x00002992      0x148 ./APP_Layer/Smart_Home_Master.o
+                0x00002992                Child_vFan
  .text.Home_vChildren_Room_2
-                0x00002aa0      0x106 ./APP_Layer/Smart_Home_Master.o
-                0x00002aa0                Home_vChildren_Room_2
+                0x00002ada      0x106 ./APP_Layer/Smart_Home_Master.o
+                0x00002ada                Home_vChildren_Room_2
  .text.Home_vChildren_Room_1
-                0x00002ba6      0x106 ./APP_Layer/Smart_Home_Master.o
-                0x00002ba6                Home_vChildren_Room_1
+                0x00002be0      0x106 ./APP_Layer/Smart_Home_Master.o
+                0x00002be0                Home_vChildren_Room_1
  .text.Bed_vFan
-                0x00002cac      0x148 ./APP_Layer/Smart_Home_Master.o
-                0x00002cac                Bed_vFan
+                0x00002ce6      0x148 ./APP_Layer/Smart_Home_Master.o
+                0x00002ce6                Bed_vFan
  .text.Home_vBed_Room
-                0x00002df4      0x106 ./APP_Layer/Smart_Home_Master.o
-                0x00002df4                Home_vBed_Room
- .text.main     0x00002efa      0x37c ./APP_Layer/Smart_Home_Master.o
-                0x00002efa                main
- .text.libgcc   0x00003276       0x18 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
-                0x00003276                __udivmodqi4
- .text.libgcc   0x0000328e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x0000328e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x0000328e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
-                0x0000328e                . = ALIGN (0x2)
+                0x00002e2e      0x106 ./APP_Layer/Smart_Home_Master.o
+                0x00002e2e                Home_vBed_Room
+ .text.main     0x00002f34      0x37c ./APP_Layer/Smart_Home_Master.o
+                0x00002f34                main
+ .text.libgcc   0x000032b0       0x18 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+                0x000032b0                __udivmodqi4
+ .text.libgcc   0x000032c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x000032c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x000032c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                0x000032c8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000328e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x0000328e                exit
-                0x0000328e                _exit
+ .fini9         0x000032c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000032c8                exit
+                0x000032c8                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -555,11 +555,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000328e        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x000032c8        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00003292                _etext = .
+                0x000032cc                _etext = .
 
-.data           0x00800060      0x578 load address 0x00003292
+.data           0x00800060      0x578 load address 0x000032cc
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
@@ -731,8 +731,8 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  COMMON         0x0080062f        0x1 ./APP_Layer/Smart_Home_Master.o
                 0x0080062f                SPI_Recieve
                 0x00800630                PROVIDE (__bss_end, .)
-                0x00003292                __data_load_start = LOADADDR (.data)
-                0x0000380a                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000032cc                __data_load_start = LOADADDR (.data)
+                0x00003844                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800630        0x0
                 0x00800630                PROVIDE (__noinit_start, .)
